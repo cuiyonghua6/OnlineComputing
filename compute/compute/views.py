@@ -5,7 +5,9 @@
 @File: views.py.py
 @Description: 
 """
-import datetime
+
+import time
+import random
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -21,10 +23,18 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
+with open('compute/my_file.txt', 'r', encoding='utf-8') as f:
+    data_list = f.readlines()
+    print(data_list[10])
 
 
 def home(request):
-    return render(request, 'index.html')
+    context = dict()
+    time_now = time.strftime('%Y-%m-%d %H:%M:%S')
+    centence = random.choice(data_list)
+    context['time_now'] = time_now
+    context['centence'] = centence
+    return render(request, 'index.html', context)
 
 
 def run_code(code):
